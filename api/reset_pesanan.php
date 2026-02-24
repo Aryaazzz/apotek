@@ -2,6 +2,26 @@
 session_start();
 require "../config/database.php";
 
+// Check if it's admin reset request (POST from admin dashboard)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['admin_reset'])) {
+  if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    exit;
+  }
+  
+  // Delete all pesanan records
+  $deleteObat = mysqli_query($conn, "DELETE FROM pesanan_obat");
+  $deletePesanan = mysqli_query($conn, "DELETE FROM pesanan");
+  
+  if ($deleteObat && $deletePesanan) {
+    echo json_encode(['success' => true, 'message' => 'Semua pesanan berhasil dihapus']);
+  } else {
+    echo json_encode(['success' => false, 'message' => 'Gagal menghapus pesanan']);
+  }
+  exit;
+}
+
+// Original user reset functionality
 if(!isset($_SESSION['user_id'])){
   echo json_encode(["success"=>false]);
   exit;

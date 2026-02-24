@@ -14,14 +14,19 @@ $totalObat = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM obat"));
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Apotek</title>
+<title>Admin Apotek - Ramadhan</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+* {
+  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body{
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #dcfce7 50%, #f0fdf4 75%, #ecfeff 100%);
+  background: linear-gradient(135deg, #f8fafb 0%, #e8f5e9 50%, #f0f9ff 100%);
   background-size: 200% 200%;
   animation: bg 15s ease infinite;
 }
@@ -196,32 +201,32 @@ body{
 <div class="flex min-h-screen">
 
 <!-- SIDEBAR -->
-<aside class="w-64 bg-white shadow-xl flex flex-col">
-  <div class="p-8 text-center border-b-2 border-gray-200">
-    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-green-500 to-green-600 text-white flex items-center justify-center text-3xl shadow-lg">
-      <i class="fas fa-capsules"></i>
+<aside class="w-64 shadow-xl flex flex-col" style="background: linear-gradient(180deg, #0f5132 0%, #1b6a3f 100%);">
+  <div class="p-8 text-center border-b-2" style="border-color: #a8e06633;">
+    <div class="w-16 h-16 mx-auto rounded-full text-white flex items-center justify-center text-3xl shadow-lg" style="background: linear-gradient(135deg, #ffe066 0%, #ffb300 100%);">
+      <i class="fas fa-mosque" style="color: #0f5132;"></i>
     </div>
-    <h2 class="mt-4 font-bold text-xl text-green-700">Admin Apotek</h2>
-    <p class="text-xs text-gray-500 mt-1">Manajemen Obat</p>
+    <h2 class="mt-4 font-bold text-xl text-white">Admin Apotek</h2>
+    <p class="text-xs mt-1" style="color: #a8e063;"><i class="fas fa-moon" style="margin-right: 4px;"></i>Ramadhan 1447 H</p>
   </div>
 
   <nav class="p-5 space-y-1 flex-1">
-    <button onclick="showSection('dashboard')" class="w-full px-4 py-3 rounded-lg bg-green-100 text-green-700 font-semibold transition hover:bg-green-200 flex items-center gap-3">
+    <button onclick="showSection('dashboard')" class="w-full px-4 py-3 rounded-lg text-white font-semibold transition flex items-center gap-3" style="background: rgba(168,224,99,0.25); color: #a8e063;">
       <i class="fas fa-chart-line w-5 text-center"></i> <span>Dashboard</span>
     </button>
-    <button onclick="showSection('tambah')" class="w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition flex items-center gap-3">
-      <i class="fas fa-plus w-5 text-center text-green-600"></i> <span>Tambah Obat</span>
+    <button onclick="showSection('tambah')" class="w-full px-4 py-3 rounded-lg text-white hover:text-yellow-300 font-medium transition flex items-center gap-3">
+      <i class="fas fa-plus w-5 text-center" style="color: #ffe066;"></i> <span>Tambah Obat</span>
     </button>
-    <button onclick="showSection('obat')" class="w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition flex items-center gap-3">
-      <i class="fas fa-list w-5 text-center text-green-600"></i> <span>Daftar Obat</span>
+    <button onclick="showSection('obat')" class="w-full px-4 py-3 rounded-lg text-white hover:text-yellow-300 font-medium transition flex items-center gap-3">
+      <i class="fas fa-list w-5 text-center" style="color: #ffe066;"></i> <span>Daftar Obat</span>
     </button>
-    <button onclick="showSection('pesanan')" class="w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition flex items-center gap-3">
-      <i class="fas fa-shopping-box w-5 text-center text-green-600"></i> <span>Pesanan</span>
+    <button onclick="showSection('pesanan')" class="w-full px-4 py-3 rounded-lg text-white hover:text-yellow-300 font-medium transition flex items-center gap-3">
+      <i class="fas fa-shopping-bag w-5 text-center" style="color: #ffe066;"></i> <span>Pesanan</span>
     </button>
   </nav>
 
-  <div class="p-5 border-t-2 border-gray-200">
-    <a href="auth/logout.php" class="block text-center bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-lg font-medium hover:from-red-600 hover:to-red-700 transition flex items-center justify-center gap-2">
+  <div class="p-5 border-t-2" style="border-color: #a8e06633;">
+    <a href="auth/logout.php" class="block text-center text-white py-3 rounded-lg font-medium transition flex items-center justify-center gap-2" style="background: linear-gradient(90deg, #d32f2f, #f44336);">
       <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
     </a>
   </div>
@@ -230,11 +235,11 @@ body{
 <!-- MAIN -->
 <div class="flex-1 flex flex-col">
 
-<header class="bg-white shadow-md px-8 py-5 flex items-center gap-3 border-b-2 border-green-100">
-  <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white flex items-center justify-center text-xl">
-    <i class="fas fa-home"></i>
+<header class="shadow-md px-8 py-5 flex items-center gap-3 border-b-2" style="background: linear-gradient(90deg, #0f5132 0%, #1b6a3f 50%, #2d8a5a 100%); border-color: #a8e06633;">
+  <div class="w-12 h-12 rounded-lg text-white flex items-center justify-center text-xl" style="background: linear-gradient(135deg, #ffe066 0%, #ffb300 100%);">
+    <i class="fas fa-home" style="color: #0f5132;"></i>
   </div>
-  <h1 class="text-2xl font-bold text-green-700">
+  <h1 class="text-2xl font-bold text-white">
     Dashboard Admin
   </h1>
 </header>
@@ -243,67 +248,67 @@ body{
 
 <!-- DASHBOARD -->
 <section id="dashboard" class="section active">
-  <div class="bg-gradient-to-r from-green-500 to-green-600 p-10 rounded-2xl shadow-lg text-white text-center mb-10">
-    <h2 class="text-3xl font-bold mb-2">Selamat Datang Apoteker</h2>
-    <p class="text-green-100">Kelola data obat dan pesanan dengan mudah 💪💊</p>
+  <div class="p-10 rounded-2xl shadow-lg text-white text-center mb-10" style="background: linear-gradient(90deg, #0f5132 0%, #a8e063 100%);">
+    <h2 class="text-3xl font-bold mb-2"><i class="fas fa-moon" style="margin-right: 10px;"></i>Selamat Datang Apoteker</h2>
+    <p style="color: #f0fdf4;">Kelola data obat dan pesanan dengan mudah di bulan suci Ramadhan <i class="fas fa-moon"></i> <i class="fas fa-pills"></i></p>
   </div>
 
   <div class="grid md:grid-cols-3 gap-6 w-full">
-    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4 border-green-500">
-      <div class="w-14 h-14 mx-auto rounded-full bg-green-100 text-green-600 flex items-center justify-center text-3xl mb-4">
+    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4" style="border-color: #a8e063;">
+      <div class="w-14 h-14 mx-auto rounded-full text-white flex items-center justify-center text-3xl mb-4" style="background: linear-gradient(135deg, #a8e063 0%, #7cb342 100%);">
         <i class="fas fa-pills"></i>
       </div>
       <p class="text-gray-600 text-sm mb-1">Total Obat</p>
-      <h2 class="text-4xl font-bold text-green-600"><?= $totalObat ?></h2>
+      <h2 class="text-4xl font-bold" style="color: #0f5132;"><i class="fas fa-pills mr-2"></i><?= $totalObat ?></h2>
     </div>
-    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4 border-blue-500">
-      <div class="w-14 h-14 mx-auto rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mb-4">
+    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4" style="border-color: #ffe066;">
+      <div class="w-14 h-14 mx-auto rounded-full text-white flex items-center justify-center text-3xl mb-4" style="background: linear-gradient(135deg, #ffe066 0%, #ffb300 100%);">
         <i class="fas fa-clock"></i>
       </div>
       <p class="text-gray-600 text-sm mb-1">Status</p>
-      <h2 class="text-2xl font-bold text-blue-600">Realtime</h2>
+      <h2 class="text-2xl font-bold" style="color: #0f5132;">Realtime</h2>
     </div>
-    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4 border-purple-500">
-      <div class="w-14 h-14 mx-auto rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-3xl mb-4">
+    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4" style="border-color: #0f5132;">
+      <div class="w-14 h-14 mx-auto rounded-full text-white flex items-center justify-center text-3xl mb-4" style="background: linear-gradient(135deg, #0f5132 0%, #1b6a3f 100%);">
         <i class="fas fa-check-circle"></i>
       </div>
       <p class="text-gray-600 text-sm mb-1">Sistem</p>
-      <h2 class="text-2xl font-bold text-purple-600">Aktif</h2>
+      <h2 class="text-2xl font-bold" style="color: #0f5132;">Aktif</h2>
     </div>
   </div>
 </section>
 
 <!-- TAMBAH OBAT -->
-<section id="tambah" class="section bg-white p-8 rounded-2xl shadow-md">
-<h3 class="text-2xl font-bold text-green-700 mb-6 flex items-center gap-2">
-  <i class="fas fa-plus-circle"></i> Tambah Obat Baru
+<section id="tambah" class="section bg-white p-8 rounded-2xl shadow-md" style="border-top: 4px solid #a8e063;">
+<h3 class="text-2xl font-bold mb-6 flex items-center gap-2" style="color: #0f5132;">
+  <i class="fas fa-plus-circle" style="color: #a8e063;"></i> Tambah Obat Baru
 </h3>
 <form action="admin_obat_tambah.php" method="POST" class="grid md:grid-cols-2 gap-5">
-  <input name="nama" placeholder="Nama Obat" class="border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500" required>
-  <input name="kategori" placeholder="Kategori" class="border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500" required>
-  <input name="harga" type="number" placeholder="Harga" class="border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500" required>
-  <input name="gambar" placeholder="URL Gambar" class="border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500" required>
-  <textarea name="deskripsi" placeholder="Deskripsi" class="border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500 md:col-span-2 resize-none" rows="4"></textarea>
-  <button class="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-lg md:col-span-2 font-semibold hover:from-green-600 hover:to-green-700 transition flex items-center justify-center gap-2">
+  <input name="nama" placeholder="Nama Obat" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
+  <input name="kategori" placeholder="Kategori" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
+  <input name="harga" type="number" placeholder="Harga" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
+  <input name="gambar" placeholder="URL Gambar" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
+  <textarea name="deskripsi" placeholder="Deskripsi" class="border-2 p-3 rounded-lg focus:outline-none transition md:col-span-2 resize-none" style="border-color: #a8e06644; background: #f9f9f9;" rows="4"></textarea>
+  <button class="text-white py-3 rounded-lg md:col-span-2 font-semibold transition flex items-center justify-center gap-2" style="background: linear-gradient(90deg, #0f5132 0%, #a8e063 100%);">
     <i class="fas fa-save"></i> Simpan Obat
   </button>
 </form>
 </section>
 
 <!-- DAFTAR OBAT -->
-<section id="obat" class="section bg-white p-8 rounded-2xl shadow-md">
-<h3 class="text-2xl font-bold text-green-700 mb-6 flex items-center gap-2">
-  <i class="fas fa-list"></i> Daftar Obat & Kelola Stok
+<section id="obat" class="section bg-white p-8 rounded-2xl shadow-md" style="border-top: 4px solid #a8e063;">
+<h3 class="text-2xl font-bold mb-6 flex items-center gap-2" style="color: #0f5132;">
+  <i class="fas fa-list" style="color: #a8e063;"></i> Daftar Obat & Kelola Stok
 </h3>
 
 <!-- SEARCH & FILTER -->
 <div class="grid md:grid-cols-3 gap-4 mb-6">
   <div class="relative">
-    <input type="text" id="searchInput" placeholder="🔍 Cari nama obat..." class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500 transition">
+    <input type="text" id="searchInput" placeholder="Cari nama obat..." class="w-full border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;">
   </div>
   <div>
-    <select id="filterKategori" class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500 transition bg-white">
-      <option value="">📂 Semua Kategori</option>
+    <select id="filterKategori" class="w-full border-2 p-3 rounded-lg focus:outline-none transition bg-white" style="border-color: #a8e06644;">
+      <option value="">Semua Kategori</option>
       <?php
       $kategoris = mysqli_query($conn, "SELECT DISTINCT kategori FROM obat ORDER BY kategori ASC");
       while($k = mysqli_fetch_assoc($kategoris)):
@@ -313,21 +318,21 @@ body{
     </select>
   </div>
   <div class="text-right">
-    <button onclick="resetFilter()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition font-medium flex items-center justify-center gap-2 w-full">
-      <i class="fas fa-redo"></i> Reset Filter
+    <button onclick="resetFilter()" class="text-white px-6 py-3 rounded-lg transition font-medium flex items-center justify-center gap-2 w-full" style="background: #666;">
+      <i class="fas fa-sync-alt"></i> Reset Filter
     </button>
   </div>
 </div>
 
 <div class="overflow-x-auto">
 <table class="w-full">
-<thead class="bg-gradient-to-r from-green-500 to-green-600 text-white">
+<thead class="text-white" style="background: linear-gradient(90deg, #0f5132 0%, #a8e063 100%);">
 <tr>
   <th class="p-4 text-left font-semibold">Gambar</th>
   <th class="p-4 text-left font-semibold">Nama Obat</th>
   <th class="p-4 text-left font-semibold">Kategori</th>
   <th class="p-4 text-left font-semibold">Harga</th>
-  <th class="p-4 text-center font-semibold">Stok 📦</th>
+  <th class="p-4 text-center font-semibold"><i class="fas fa-box"></i> Stok</th>
   <th class="p-4 text-center font-semibold">Aksi</th>
 </tr>
 </thead>
@@ -340,7 +345,7 @@ $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange
 ?>
 <tr class="border-b hover:bg-gray-50 transition obat-row" data-obat-id="<?= $o['id'] ?>">
 <td class="p-4 text-center">
-  <div class="w-16 h-16 mx-auto bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200 hover:border-green-500 transition">
+  <div class="w-16 h-16 mx-auto bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200 hover:border-opacity-70 transition" style="border-color: #a8e06633;">
     <?php if (!empty($o['gambar'])): ?>
       <img src="<?= htmlspecialchars($o['gambar']) ?>" alt="<?= htmlspecialchars($o['nama']) ?>" class="w-full h-full object-cover cursor-pointer" onclick="showImageModal('<?= htmlspecialchars($o['gambar']) ?>', '<?= htmlspecialchars($o['nama']) ?>')">
     <?php else: ?>
@@ -353,17 +358,17 @@ $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange
 </td>
 <td class="p-4 nama-obat"><?= htmlspecialchars($o['nama']) ?></td>
 <td class="p-4 text-gray-600 kategori-obat"><?= htmlspecialchars($o['kategori']) ?></td>
-<td class="p-4 text-green-600 font-bold">Rp<?= number_format($o['harga']) ?></td>
-<td class="p-4 text-center stok-display <?= $stok_color ?>"><?= $stok ?></td>
+<td class="p-4 font-bold" style="color: #0f5132;">Rp<?= number_format($o['harga']) ?></td>
+<td class="p-4 text-center stok-display" style="color: <?= $stok == 0 ? '#ef4444' : ($stok < 10 ? '#f59e0b' : '#10b981'); ?>; font-weight: bold;"><?= $stok ?></td>
 <td class="p-4 text-center">
   <div class="flex gap-2 justify-center flex-wrap">
-    <button onclick="openRestokModal(<?= $o['id'] ?>, '<?= htmlspecialchars($o['nama']) ?>')" class="bg-purple-100 text-purple-600 px-3 py-2 rounded-lg hover:bg-purple-200 transition font-medium text-sm flex items-center gap-1" title="Restok Obat">
+    <button onclick="openRestokModal(<?= $o['id'] ?>, '<?= htmlspecialchars($o['nama']) ?>')" class="text-white px-3 py-2 rounded-lg transition font-medium text-sm flex items-center gap-1" style="background: linear-gradient(90deg, #a8e063 0%, #7cb342 100%);" title="Restok Obat">
       <i class="fas fa-plus-circle"></i> Restok
     </button>
-    <a href="edit_obat.php?id=<?= $o['id'] ?>" class="bg-blue-100 text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-200 transition font-medium text-sm flex items-center gap-1">
+    <a href="edit_obat.php?id=<?= $o['id'] ?>" class="text-white px-3 py-2 rounded-lg transition font-medium text-sm flex items-center gap-1" style="background: linear-gradient(90deg, #0f5132 0%, #1b6a3f 100%);">
       <i class="fas fa-edit"></i> Edit
     </a>
-    <a href="hapus_obat.php?id=<?= $o['id'] ?>" class="bg-red-100 text-red-600 px-3 py-2 rounded-lg hover:bg-red-200 transition font-medium text-sm flex items-center gap-1">
+    <a href="hapus_obat.php?id=<?= $o['id'] ?>" class="text-white px-3 py-2 rounded-lg transition font-medium text-sm flex items-center gap-1" style="background: linear-gradient(90deg, #d32f2f, #f44336);">
       <i class="fas fa-trash-alt"></i> Hapus
     </a>
   </div>
@@ -380,36 +385,36 @@ $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange
 </section>
 
 <!-- PESANAN -->
-<section id="pesanan" class="section bg-white p-8 rounded-2xl shadow-md">
-<h3 class="text-2xl font-bold text-green-700 mb-6 flex items-center gap-2">
-  <i class="fas fa-shopping-bag"></i> Pesanan Pelanggan (Realtime)
+<section id="pesanan" class="section bg-white p-8 rounded-2xl shadow-md" style="border-top: 4px solid #ffe066;">
+<h3 class="text-2xl font-bold mb-6 flex items-center gap-2" style="color: #0f5132;">
+  <i class="fas fa-shopping-bag" style="color: #ffe066;"></i> Pesanan Pelanggan (Realtime)
 </h3>
 
 <!-- SEARCH & FILTER PESANAN -->
 <div class="grid md:grid-cols-4 gap-4 mb-6">
   <div class="relative">
-    <input type="text" id="searchPembeli" placeholder="🔍 Cari nama pembeli..." class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500 transition">
+    <input type="text" id="searchPembeli" placeholder="Cari nama pembeli..." class="w-full border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;">
   </div>
   <div>
-    <input type="text" id="searchKeluhan" placeholder="🏥 Cari keluhan..." class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500 transition">
+    <input type="text" id="searchKeluhan" placeholder="Cari keluhan..." class="w-full border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;">
   </div>
   <div>
-    <select id="filterStatusPesanan" class="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:border-green-500 transition bg-white">
-      <option value="">📋 Semua Status</option>
-      <option value="proses">⏳ Diproses</option>
-      <option value="selesai">✅ Selesai</option>
+    <select id="filterStatusPesanan" class="w-full border-2 p-3 rounded-lg focus:outline-none transition bg-white" style="border-color: #a8e06644;">
+      <option value="">Semua Status</option>
+      <option value="proses"><i class="fas fa-hourglass-half"></i> Diproses</option>
+      <option value="selesai"><i class="fas fa-check-circle"></i> Riwayat Selesai</option>
     </select>
   </div>
-  <div class="text-right">
-    <button onclick="resetFilterPesanan()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition font-medium flex items-center justify-center gap-2 w-full">
-      <i class="fas fa-redo"></i> Reset
+  <div class="flex gap-2 justify-start">
+    <button onclick="resetAllPesanan()" class="text-white px-6 py-3 rounded-lg transition font-medium flex items-center justify-center gap-2" style="background: #d32f2f;">
+      <i class="fas fa-trash-alt"></i> Reset Semua
     </button>
   </div>
 </div>
 
 <div class="overflow-x-auto">
 <table class="w-full">
-<thead class="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+<thead class="text-white" style="background: linear-gradient(90deg, #ff9800 0%, #ffb74d 100%);">
 <tr>
   <th class="p-4 text-left font-semibold">Pembeli</th>
   <th class="p-4 text-left font-semibold">Keluhan</th>
@@ -429,23 +434,23 @@ $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange
 <!-- MODAL PILIH OBAT -->
 <div id="modalObat" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white rounded-2xl p-8 w-full max-w-2xl max-h-96 overflow-y-auto">
-    <h3 class="text-2xl font-bold text-green-700 mb-6 flex items-center gap-2">
-      <i class="fas fa-pills"></i> Pilih Obat untuk Pesanan
+    <h3 class="text-2xl font-bold mb-6 flex items-center gap-2" style="color: #0f5132;">
+      <i class="fas fa-pills" style="color: #a8e063;"></i> Pilih Obat untuk Pesanan
     </h3>
-    <p class="text-sm text-gray-600 mb-4 bg-blue-50 p-3 rounded-lg">
+    <p class="text-sm text-gray-600 mb-4 p-3 rounded-lg" style="background: #f0f9ff;">
       <i class="fas fa-info-circle mr-2"></i> Pilih minimal 1 obat sebelum menyelesaikan pesanan
     </p>
     <div class="mb-4">
-      <input type="text" id="searchObatModal" placeholder="Cari obat..." class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition" />
+      <input type="text" id="searchObatModal" placeholder="Cari obat..." class="w-full px-4 py-2 border-2 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" />
     </div>
     <div id="daftarObatModal" class="space-y-3 mb-6">
       <!-- obat akan di-render di sini -->
     </div>
     <div class="flex gap-3 justify-end">
-      <button onclick="closeModalObat()" class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-3 rounded-lg transition font-medium">
+      <button onclick="closeModalObat()" class="text-white px-6 py-3 rounded-lg transition font-medium" style="background: #666;">
         <i class="fas fa-times mr-2"></i> Batal
       </button>
-      <button onclick="submitObat()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition font-medium">
+      <button onclick="submitObat()" class="text-white px-6 py-3 rounded-lg transition font-medium" style="background: linear-gradient(90deg, #0f5132 0%, #a8e063 100%);">
         <i class="fas fa-check mr-2"></i> Selesaikan Pesanan
       </button>
     </div>
@@ -651,6 +656,21 @@ document.getElementById('modalRestok')?.addEventListener('click', function(e) {
 let pesananList = [];
 let obatList = [];
 let currentPesananId = null;
+
+async function resetAllPesanan() {
+  if (!confirm('Yakin ingin menghapus semua pesanan dan riwayatnya?')) return;
+  const fd = new FormData();
+  fd.append('admin_reset', '1');
+  const res = await fetch('api/reset_pesanan.php', { method: 'POST', body: fd });
+  const data = await res.json();
+  if (data.success) {
+    showToast('Reset Berhasil', 'Semua pesanan dan riwayat telah dihapus', 'success');
+    pesananList = [];
+    renderPesanan();
+  } else {
+    showToast('Reset Gagal', data.message || 'Gagal menghapus pesanan', 'error');
+  }
+}
 
 async function loadObat() {
   const res = await fetch("api/get_obat.php");

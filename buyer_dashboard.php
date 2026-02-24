@@ -20,8 +20,9 @@ if (!$data) {
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard Pembeli</title>
+<title>Dashboard Pembeli - Ramadhan</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
 
 <!-- Tailwind CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -30,6 +31,9 @@ if (!$data) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+* {
+  font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
   
 @keyframes float {
   0%,100% { transform: translateY(0); }
@@ -37,6 +41,24 @@ if (!$data) {
 }
 .float {
   animation: float 6s ease-in-out infinite;
+}
+
+@keyframes moon-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(10px) rotate(3deg); }
+}
+
+@keyframes star-twinkle-soft {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.moon-ornament {
+  animation: moon-float 4s ease-in-out infinite;
+}
+
+.star-ornament {
+  animation: star-twinkle-soft 2s ease-in-out infinite;
 }
 
 body.dark{
@@ -249,10 +271,14 @@ body::before{
   position:fixed;
   inset:0;
   background:
-    radial-gradient(circle at 15% 20%, rgba(76,175,80,.15), transparent 40%),
-    radial-gradient(circle at 85% 80%, rgba(102,187,106,.12), transparent 45%);
+    radial-gradient(circle at 15% 20%, rgba(168,224,99,.18), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(255,224,102,.12), transparent 45%);
   z-index:-2;
   animation: backgroundShift 10s ease-in-out infinite alternate;
+}
+
+body {
+  background: linear-gradient(135deg, #f8fafb 0%, #e8f5e9 50%, #f0f9ff 100%) !important;
 }
 
 @keyframes backgroundShift {
@@ -417,10 +443,25 @@ main > section:nth-child(6) { animation-delay: 0.6s; }
 </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 via-green-50 to-green-100 min-h-screen text-gray-700 overflow-x-hidden">
+<body class="min-h-screen text-gray-700 overflow-x-hidden">
 
 <!-- TOAST NOTIFICATION CONTAINER -->
 <div id="toastContainer" class="toast-container"></div>
+
+<!-- RAMADHAN ORNAMENTS -->
+<div class="fixed top-0 left-0 w-full h-screen pointer-events-none z-0" style="overflow: hidden;">
+  <!-- Moon -->
+  <i class="fas fa-moon moon-ornament" style="position: absolute; top: 40px; left: 60px; font-size: 50px; color: #ffe066; opacity: 0.8; filter: drop-shadow(0 0 16px #ffe06666);"></i>
+  
+  <!-- Stars -->
+  <i class="fas fa-star star-ornament" style="position: absolute; top: 100px; left: 150px; font-size: 24px; color: #fffbe6; opacity: 0.7; filter: drop-shadow(0 0 8px #fffbe6aa);"></i>
+  <i class="fas fa-star star-ornament" style="position: absolute; top: 150px; right: 100px; font-size: 20px; color: #fffbe6; opacity: 0.7; filter: drop-shadow(0 0 8px #fffbe6aa); animation-delay: 0.5s;"></i>
+  <i class="fas fa-star star-ornament" style="position: absolute; top: 300px; right: 200px; font-size: 18px; color: #fffbe6; opacity: 0.6; filter: drop-shadow(0 0 6px #fffbe6aa); animation-delay: 1s;"></i>
+  
+  <!-- Lanterns -->
+  <i class="fas fa-lantern moon-ornament" style="position: absolute; top: 60px; right: 80px; font-size: 45px; color: #ffb300; opacity: 0.8; filter: drop-shadow(0 0 12px #ffb30066);"></i>
+  <i class="fas fa-lantern moon-ornament" style="position: absolute; bottom: 150px; left: 100px; font-size: 35px; color: #ffe066; opacity: 0.7; filter: drop-shadow(0 0 8px #ffe06666); animation-delay: 0.3s;"></i>
+</div>
 
 <div class="medical-bg">
   <span class="pill" style="left:10%; animation-delay:0s;"></span>
@@ -434,37 +475,37 @@ main > section:nth-child(6) { animation-delay: 0.6s; }
 </div>
 
 <!-- HEADER -->
-<header class="bg-gradient-to-r from-green-600 to-blue-600 shadow-2xl sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 py-6 flex items-center justify-between">
+<header class="sticky top-0 z-50 shadow-xl" style="background: linear-gradient(90deg, #0f5132 0%, #1b6a3f 50%, #2d8a5a 100%);">
+  <div class="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
     <div class="flex items-center gap-4">
-      <div class="w-14 h-14 rounded-full bg-white bg-opacity-20 text-white flex items-center justify-center text-2xl shadow-lg">
-        <i class="fas fa-pills"></i>
+      <div class="w-14 h-14 rounded-full text-white flex items-center justify-center text-2xl shadow-lg" style="background: linear-gradient(135deg, #ffe066 0%, #ffb300 100%);">
+        <i class="fas fa-mosque" style="color: #0f5132;"></i>
       </div>
       <div class="text-white">
         <h1 class="text-2xl font-bold">Apotek Kelompok Satu</h1>
-        <p class="text-sm text-green-100">Portal Pesanan Obat</p>
+        <p class="text-sm" style="color: #a8e063;"><i class="fas fa-moon" style="margin-right: 6px;"></i>Ramadhan 1447 H</p>
       </div>
     </div>
-    <a href="auth/logout.php" class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg transition duration-300 transform hover:scale-105 font-medium shadow-lg">
+    <a href="auth/logout.php" class="flex items-center gap-2 text-white px-6 py-3 rounded-lg transition duration-300 transform hover:scale-105 font-medium shadow-lg" style="background: linear-gradient(90deg, #d32f2f, #f44336);">
       <i class="fas fa-sign-out-alt"></i> Logout
     </a>
   </div>
 </header>
 
-<main class="max-w-7xl mx-auto px-4 py-12 space-y-16">"
+<main class="max-w-7xl mx-auto px-4 py-12 space-y-16 relative z-10">
 <!-- DAFTAR OBAT -->
-<section class="bg-white rounded-2xl shadow-lg p-8">
-  <h2 class="text-3xl font-bold text-green-700 mb-2 flex items-center gap-3">
-    <i class="fas fa-capsules text-green-600 text-2xl"></i> Daftar Obat Tersedia
+<section class="rounded-2xl shadow-lg p-8" style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(168,224,99,0.08) 100%); border: 2px solid #a8e06633;">
+  <h2 class="text-3xl font-bold mb-2 flex items-center gap-3" style="color: #0f5132;">
+    <i class="fas fa-capsules text-2xl" style="color: #a8e063;"></i> Daftar Obat Tersedia
   </h2>
-  <p class="text-gray-600 mb-8">Lihat berbagai pilihan obat yang tersedia di apotek kami</p>
+  <p class="text-gray-600 mb-8">Lihat berbagai pilihan obat berkualitas di bulan suci ini</p>
 
   <div id="daftarObatContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
     <!-- Obat akan di-load via JavaScript untuk menampilkan stok realtime -->
     <div class="flex justify-center items-center col-span-full py-12">
       <div class="text-center">
         <div class="animate-spin mb-4">
-          <i class="fas fa-spinner text-4xl text-green-600"></i>
+          <i class="fas fa-spinner text-4xl" style="color: #a8e063;"></i>
         </div>
         <p class="text-gray-600 font-medium">Memuat daftar obat...</p>
       </div>
@@ -475,44 +516,46 @@ main > section:nth-child(6) { animation-delay: 0.6s; }
 <!-- FORM KELUHAN & STATUS -->
 <section class="grid md:grid-cols-2 gap-8">
   <!-- Form Input -->
-  <div class="bg-white rounded-2xl shadow-lg p-8 border-l-4 border-blue-500">
-    <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-3">
-      <i class="fas fa-comment-medical text-blue-500 text-xl"></i> Konsultasi Keluhan
+  <div class="rounded-2xl shadow-lg p-8" style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(168,224,99,0.08) 100%); border-left: 4px solid #a8e063;">
+    <h2 class="text-2xl font-bold mb-2 flex items-center gap-3" style="color: #0f5132;">
+      <i class="fas fa-comment-medical text-xl" style="color: #a8e063;"></i> Konsultasi Keluhan
     </h2>
-    <p class="text-gray-600 text-sm mb-6">Ceritakan keluhan Anda kepada apoteker kami</p>
+    <p class="text-gray-600 text-sm mb-6">Ceritakan keluhan Anda kepada apoteker kami, semoga cepat sembuh di bulan suci ini</p>
 
     <div class="space-y-5">
       <!-- Nama -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">
-          <i class="fas fa-user text-blue-500 mr-2"></i>Nama Anda
+        <label class="block text-sm font-semibold mb-2" style="color: #0f5132;">
+          <i class="fas fa-user mr-2" style="color: #a8e063;"></i>Nama Anda
         </label>
         <input
           type="text"
           id="nama_pembeli"
           placeholder="Masukkan nama lengkap"
-          class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 transition-all duration-300 hover:shadow-md text-gray-800"
+          class="w-full px-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-300 hover:shadow-md text-gray-800"
+          style="border-color: #a8e06644; background: #f9f9f9;"
         >
       </div>
 
       <!-- Keluhan -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">
-          <i class="fas fa-stethoscope text-blue-500 mr-2"></i>Keluhan / Gejala
+        <label class="block text-sm font-semibold mb-2" style="color: #0f5132;">
+          <i class="fas fa-stethoscope mr-2" style="color: #a8e063;"></i>Keluhan / Gejala
         </label>
         <textarea
           id="keluhan"
           rows="5"
           placeholder="Jelaskan keluhan atau gejala yang Anda alami secara detail..."
-          class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 transition-all duration-300 hover:shadow-md resize-none text-gray-800"
+          class="w-full px-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-300 hover:shadow-md resize-none text-gray-800"
+          style="border-color: #a8e06644; background: #f9f9f9;"
         ></textarea>
       </div>
 
       <!-- Tombol -->
       <button
         id="kirimKeluhan"
-        class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-3 hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-      >
+        class="w-full text-white py-3 rounded-xl font-bold flex items-center justify-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+        style="background: linear-gradient(90deg, #0f5132 0%, #a8e063 100%);">
         <i class="fas fa-paper-plane text-lg"></i>
         Kirim Keluhan ke Admin
       </button>
@@ -520,31 +563,31 @@ main > section:nth-child(6) { animation-delay: 0.6s; }
   </div>
 
   <!-- Status Pesanan -->
-  <div class="bg-gradient-to-br from-white via-green-50 to-green-100 rounded-2xl shadow-lg p-8 border-l-4 border-green-500">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-      <i class="fas fa-clipboard-check text-green-600 text-xl animate-pulse"></i> Status Pesanan Anda
+  <div class="rounded-2xl shadow-lg p-8" style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,224,102,0.12) 100%); border-left: 4px solid #ffe066;">
+    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3" style="color: #0f5132;">
+      <i class="fas fa-clipboard-check text-xl animate-pulse" style="color: #ffe066;"></i> Status Pesanan Anda
     </h2>
     
     <div id="statusPesanan" class="space-y-4">
       <div class="text-center py-12">
         <div class="flex justify-center mb-4">
-          <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
-            <i class="fas fa-hourglass-half text-gray-500 text-2xl animate-bounce"></i>
+          <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background: #ffe06633;">
+            <i class="fas fa-hourglass-half text-2xl animate-bounce" style="color: #ffe066;"></i>
           </div>
         </div>
-        <p class="text-gray-600 font-medium">Menunggu keluhan Anda...</p>
-        <p class="text-sm text-gray-500 mt-2">Kirim keluhan di form sebelah untuk memulai</p>
+        <p class="font-medium" style="color: #0f5132;">Menunggu keluhan Anda...</p>
+        <p class="text-sm mt-2" style="color: #666;">Kirim keluhan di form sebelah untuk memulai</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Section Review Apotek - Horizontal Scroll (ASLI, TIDAK DIUBAH) -->
- <h2 class="review-title">
-  <i class="fas fa-star"></i>
+ <h2 class="review-title" style="color: #0f5132;">
+  <i class="fas fa-star" style="color: #ffe066;"></i>
   Review Apotek Kami
 </h2>
- <section class="max-w-6xl mx-auto px-4">
+ <section class="max-w-6xl mx-auto px-4 relative z-10">
 <div class="review-section">
   <div class="review-container">
     <div class="review-card">
@@ -583,9 +626,9 @@ main > section:nth-child(6) { animation-delay: 0.6s; }
 
 
 <!-- FOOTER -->
-<footer class="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl shadow-lg p-8 text-white text-center space-y-4">
+<footer class="rounded-2xl shadow-lg p-8 text-white text-center space-y-4 relative z-10" style="background: linear-gradient(90deg, #0f5132 0%, #1b6a3f 50%, #2d8a5a 100%);">
   <h3 class="text-2xl font-bold">Apotek Kelompok Satu</h3>
-  <div class="h-1 w-20 bg-white bg-opacity-30 mx-auto rounded-full"></div>
+  <div class="h-1 w-20 mx-auto rounded-full" style="background: #a8e063;"></div>
   <div class="grid md:grid-cols-3 gap-6 py-4">
     <div>
       <p class="flex items-center justify-center gap-2 font-semibold">
@@ -594,7 +637,7 @@ main > section:nth-child(6) { animation-delay: 0.6s; }
     </div>
     <div>
       <p class="flex items-center justify-center gap-2 font-semibold">
-        <i class= "fas fa-envelope text-lg"></i> info@apotek.com
+        <i class="fas fa-envelope text-lg"></i> info@apotek.com
       </p>
     </div>
     <div>
@@ -603,8 +646,8 @@ main > section:nth-child(6) { animation-delay: 0.6s; }
       </p>
     </div>
   </div>
-  <p class="text-sm text-green-100 pt-4 border-t border-white border-opacity-20">
-    © 2026 Apotek Kelompok Satu. Semua hak dilindungi. | Kesehatan Anda Prioritas Kami
+  <p class="text-sm pt-4 border-t" style="border-color: rgba(255,255,255,0.2); color: #a8e063;">
+    © 2026 Apotek Kelompok Satu. Semua hak dilindungi. | <i class="fas fa-moon"></i> Ramadhan Kareem <i class="fas fa-moon"></i>
   </p>
 </footer>
 
@@ -653,7 +696,7 @@ async function loadDaftarObat() {
     if (!data.success || !data.data) {
       document.getElementById('daftarObatContainer').innerHTML = `
         <div class="flex justify-center items-center col-span-full py-12">
-          <div class="text-center text-red-600">
+          <div class="text-center" style="color: #d32f2f;">
             <i class="fas fa-exclamation-circle text-4xl mb-4"></i>
             <p class="font-medium">Gagal memuat daftar obat</p>
           </div>
@@ -667,8 +710,8 @@ async function loadDaftarObat() {
     if (obats.length === 0) {
       document.getElementById('daftarObatContainer').innerHTML = `
         <div class="flex justify-center items-center col-span-full py-12">
-          <div class="text-center text-gray-500">
-            <i class="fas fa-inbox text-4xl mb-4"></i>
+          <div class="text-center" style="color: #0f5132;">
+            <i class="fas fa-inbox text-4xl mb-4" style="color: #a8e063;"></i>
             <p class="font-medium">Tidak ada obat yang tersedia saat ini</p>
           </div>
         </div>
@@ -683,11 +726,11 @@ async function loadDaftarObat() {
       const bgColor = stok === 0 ? '#fee2e2' : stok < 5 ? '#fef3c7' : '#dcfce7';
       
       return `
-        <div class="group bg-gradient-to-br from-white to-green-50 rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-green-300 ${stok === 0 ? 'opacity-60' : ''}">
+        <div class="group rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border hover:border-opacity-70 ${stok === 0 ? 'opacity-60' : ''}" style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(168,224,99,0.08) 100%); border-color: #a8e06633;">
           
-          <div class="relative h-40 bg-gradient-to-br from-green-100 to-blue-50 flex items-center justify-center overflow-hidden">
+          <div class="relative h-40 flex items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, rgba(168,224,99,0.12) 0%, rgba(255,224,102,0.08) 100%);">
             <img src="${o.gambar}" class="h-32 object-contain transition-transform duration-500 group-hover:scale-125" onerror="this.src='https://via.placeholder.com/200'">
-            <span class="absolute top-3 right-3 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+            <span class="absolute top-3 right-3 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md" style="background: linear-gradient(90deg, #0f5132 0%, #a8e063 100%);">
               ${o.kategori}
             </span>
             
@@ -698,17 +741,17 @@ async function loadDaftarObat() {
           </div>
 
           <div class="p-5 space-y-3">
-            <h3 class="font-bold text-lg text-gray-800 line-clamp-2">${o.nama}</h3>
+            <h3 class="font-bold text-lg line-clamp-2" style="color: #0f5132;">${o.nama}</h3>
             
             <p class="text-sm text-gray-600 line-clamp-2">
               ${o.deskripsi || 'Obat berkualitas tinggi'}
             </p>
             
-            <div class="border-t border-gray-200 pt-3 flex items-center justify-between">
-              <span class="text-2xl font-bold text-green-600">
+            <div class="pt-3 flex items-center justify-between" style="border-top: 2px solid #a8e06633;">
+              <span class="text-2xl font-bold" style="color: #0f5132;">
                 Rp${Number(o.harga).toLocaleString('id-ID')}
               </span>
-              <div class="flex items-center justify-center w-10 h-10 rounded-full ${stok > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'} font-bold">
+              <div class="flex items-center justify-center w-10 h-10 rounded-full ${stok > 0 ? 'text-green-600' : 'text-red-600'} font-bold" style="background: ${stok > 0 ? '#dcfce722' : '#fee2e244'};">
                 ${stok > 0 ? '✓' : '✕'}
               </div>
             </div>
@@ -722,7 +765,7 @@ async function loadDaftarObat() {
     console.error('Error loading obat:', error);
     document.getElementById('daftarObatContainer').innerHTML = `
       <div class="flex justify-center items-center col-span-full py-12">
-        <div class="text-center text-red-600">
+        <div class="text-center" style="color: #d32f2f;">
           <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
           <p class="font-medium">Terjadi kesalahan saat memuat obat</p>
         </div>

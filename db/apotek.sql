@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Jan 2026 pada 13.36
+-- Waktu pembuatan: 24 Feb 2026 pada 23.10
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -32,6 +32,7 @@ CREATE TABLE `obat` (
   `nama` varchar(100) DEFAULT NULL,
   `kategori` varchar(50) DEFAULT NULL,
   `harga` int(11) DEFAULT NULL,
+  `stok` int(11) NOT NULL DEFAULT 0,
   `gambar` varchar(255) DEFAULT NULL,
   `deskripsi` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -40,8 +41,8 @@ CREATE TABLE `obat` (
 -- Dumping data untuk tabel `obat`
 --
 
-INSERT INTO `obat` (`id`, `nama`, `kategori`, `harga`, `gambar`, `deskripsi`) VALUES
-(27, 'Paracetamol', 'Pereda Nyeri', 13000, 'https://www.pharmacyonline.co.uk/uploads/images/products/large/pharmacy-online-paracetamol-paracetamol-500mg-100-tablets-1602960473paracetamol-1.jpg', 'Paracetamol (asetaminofen) adalah obat bebas dan aman yang efektif untuk meredakan nyeri ringan hingga sedang (sakit kepala, sakit gigi, nyeri haid, otot) dan menurunkan demam.');
+INSERT INTO `obat` (`id`, `nama`, `kategori`, `harga`, `stok`, `gambar`, `deskripsi`) VALUES
+(27, 'Paracetamol', 'Pereda Nyeri', 13000, 100, 'https://www.pharmacyonline.co.uk/uploads/images/products/large/pharmacy-online-paracetamol-paracetamol-500mg-100-tablets-1602960473paracetamol-1.jpg', 'Paracetamol (asetaminofen) adalah obat bebas dan aman yang efektif untuk meredakan nyeri ringan hingga sedang (sakit kepala, sakit gigi, nyeri haid, otot) dan menurunkan demam.');
 
 -- --------------------------------------------------------
 
@@ -211,7 +212,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `obat`
 --
 ALTER TABLE `obat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesanan`

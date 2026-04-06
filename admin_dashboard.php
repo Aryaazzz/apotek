@@ -253,27 +253,81 @@ body{
     <p style="color: #f0fdf4;">Kelola data obat dan pesanan dengan mudah di bulan suci Ramadhan <i class="fas fa-moon"></i> <i class="fas fa-pills"></i></p>
   </div>
 
-  <div class="grid md:grid-cols-3 gap-6 w-full">
-    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4" style="border-color: #a8e063;">
-      <div class="w-14 h-14 mx-auto rounded-full text-white flex items-center justify-center text-3xl mb-4" style="background: linear-gradient(135deg, #a8e063 0%, #7cb342 100%);">
-        <i class="fas fa-pills"></i>
+  <div class="grid lg:grid-cols-4 gap-6 mb-8 w-full">
+    <div class="bg-white p-6 rounded-2xl shadow-md card hover:shadow-xl border-l-4 border-green-500">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-gray-500 text-sm">Pesanan Total</p>
+          <h3 id="adminOrdersTotal" class="text-3xl font-bold text-gray-900">0</h3>
+        </div>
+        <div class="text-green-600 text-3xl"><i class="fas fa-receipt"></i></div>
       </div>
-      <p class="text-gray-600 text-sm mb-1">Total Obat</p>
-      <h2 class="text-4xl font-bold" style="color: #0f5132;"><i class="fas fa-pills mr-2"></i><?= $totalObat ?></h2>
+      <p class="text-sm text-gray-500">Semua pesanan yang masuk ke sistem</p>
     </div>
-    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4" style="border-color: #ffe066;">
-      <div class="w-14 h-14 mx-auto rounded-full text-white flex items-center justify-center text-3xl mb-4" style="background: linear-gradient(135deg, #ffe066 0%, #ffb300 100%);">
-        <i class="fas fa-clock"></i>
+    <div class="bg-white p-6 rounded-2xl shadow-md card hover:shadow-xl border-l-4 border-yellow-400">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-gray-500 text-sm">Diproses</p>
+          <h3 id="adminOrdersProses" class="text-3xl font-bold text-gray-900">0</h3>
+        </div>
+        <div class="text-yellow-500 text-3xl"><i class="fas fa-hourglass-half"></i></div>
       </div>
-      <p class="text-gray-600 text-sm mb-1">Status</p>
-      <h2 class="text-2xl font-bold" style="color: #0f5132;">Realtime</h2>
+      <p class="text-sm text-gray-500">Pesanan yang sedang dikerjakan</p>
     </div>
-    <div class="bg-white p-8 rounded-2xl shadow-md card hover:shadow-xl text-center border-t-4" style="border-color: #0f5132;">
-      <div class="w-14 h-14 mx-auto rounded-full text-white flex items-center justify-center text-3xl mb-4" style="background: linear-gradient(135deg, #0f5132 0%, #1b6a3f 100%);">
-        <i class="fas fa-check-circle"></i>
+    <div class="bg-white p-6 rounded-2xl shadow-md card hover:shadow-xl border-l-4 border-green-600">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-gray-500 text-sm">Selesai</p>
+          <h3 id="adminOrdersSelesai" class="text-3xl font-bold text-gray-900">0</h3>
+        </div>
+        <div class="text-green-600 text-3xl"><i class="fas fa-check-circle"></i></div>
       </div>
-      <p class="text-gray-600 text-sm mb-1">Sistem</p>
-      <h2 class="text-2xl font-bold" style="color: #0f5132;">Aktif</h2>
+      <p class="text-sm text-gray-500">Pesanan yang sudah diselesaikan</p>
+    </div>
+    <div class="bg-white p-6 rounded-2xl shadow-md card hover:shadow-xl border-l-4 border-red-500">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-gray-500 text-sm">Stok Rendah</p>
+          <h3 id="adminLowStock" class="text-3xl font-bold text-gray-900">0</h3>
+        </div>
+        <div class="text-red-500 text-3xl"><i class="fas fa-exclamation-triangle"></i></div>
+      </div>
+      <p class="text-sm text-gray-500">Obat yang perlu diisi ulang segera</p>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-6 mb-10">
+    <div class="bg-white p-6 rounded-2xl shadow-md card hover:shadow-xl">
+      <h3 class="text-xl font-bold mb-5" style="color: #0f5132;">Distribusi Status Pesanan</h3>
+      <div class="space-y-5">
+        <div>
+          <div class="flex items-center justify-between mb-2 text-sm text-gray-600">
+            <span>Diproses</span>
+            <span id="adminOrdersProsesPercent">0%</span>
+          </div>
+          <div class="h-3 rounded-full bg-gray-200 overflow-hidden">
+            <div id="adminOrdersProsesBar" class="h-full rounded-full" style="width: 0%; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-2 text-sm text-gray-600">
+            <span>Selesai</span>
+            <span id="adminOrdersSelesaiPercent">0%</span>
+          </div>
+          <div class="h-3 rounded-full bg-gray-200 overflow-hidden">
+            <div id="adminOrdersSelesaiBar" class="h-full rounded-full" style="width: 0%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-2xl shadow-md card hover:shadow-xl">
+      <h3 class="text-xl font-bold mb-5" style="color: #0f5132;">Pesanan Terbaru</h3>
+      <div id="adminRecentOrders" class="space-y-4 text-sm text-gray-700">
+        <div class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 text-gray-500">
+          <i class="fas fa-info-circle"></i>
+          <span>Tunggu, memuat pesanan terbaru...</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -717,6 +771,54 @@ async function loadPesanan(){
   renderPesanan();
 }
 
+async function loadAdminInsights(){
+  try {
+    const [pesananRes, obatRes] = await Promise.all([
+      fetch('api/admin_pesanan_list.php'),
+      fetch('api/get_obat.php')
+    ]);
+
+    const pesananData = await pesananRes.json();
+    const obatData = await obatRes.json();
+
+    const totalOrders = pesananData.length;
+    const prosesOrders = pesananData.filter(p => p.status === 'proses').length;
+    const selesaiOrders = pesananData.filter(p => p.status === 'selesai').length;
+    const lowStock = obatData.filter(o => Number(o.stok) < 5).length;
+    const pesanPercent = totalOrders === 0 ? 0 : Math.round((prosesOrders / totalOrders) * 100);
+    const selesaiPercent = totalOrders === 0 ? 0 : Math.round((selesaiOrders / totalOrders) * 100);
+
+    document.getElementById('adminOrdersTotal').textContent = totalOrders;
+    document.getElementById('adminOrdersProses').textContent = prosesOrders;
+    document.getElementById('adminOrdersSelesai').textContent = selesaiOrders;
+    document.getElementById('adminLowStock').textContent = lowStock;
+    document.getElementById('adminOrdersProsesPercent').textContent = `${pesanPercent}%`;
+    document.getElementById('adminOrdersSelesaiPercent').textContent = `${selesaiPercent}%`;
+    document.getElementById('adminOrdersProsesBar').style.width = `${pesanPercent}%`;
+    document.getElementById('adminOrdersSelesaiBar').style.width = `${selesaiPercent}%`;
+
+    const recentContainer = document.getElementById('adminRecentOrders');
+    if (!pesananData.length) {
+      recentContainer.innerHTML = `<div class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 text-gray-500"><i class="fas fa-info-circle"></i><span>Tidak ada pesanan saat ini.</span></div>`;
+    } else {
+      recentContainer.innerHTML = pesananData.slice(0, 4).map(p => `
+        <div class="rounded-2xl p-4 bg-gray-50 border border-gray-100">
+          <div class="flex items-center justify-between gap-3 mb-3">
+            <div>
+              <div class="text-sm text-gray-500">${p.nama_pembeli}</div>
+              <div class="font-semibold text-gray-900">${p.username || 'Anonim'}</div>
+            </div>
+            <span class="text-xs font-semibold ${p.status === 'selesai' ? 'text-green-700 bg-green-100' : 'text-yellow-700 bg-yellow-100'} px-2 py-1 rounded-full">${p.status === 'selesai' ? 'Selesai' : 'Diproses'}</span>
+          </div>
+          <div class="text-sm text-gray-600 line-clamp-2">${p.keluhan || 'Tidak ada detail keluhan'}</div>
+        </div>
+      `).join('');
+    }
+  } catch (error) {
+    console.error('Error loading admin insights:', error);
+  }
+}
+
 function filterPesanan(){
   const searchPembeli = document.getElementById('searchPembeli').value.toLowerCase();
   const searchKeluhan = document.getElementById('searchKeluhan').value.toLowerCase();
@@ -884,6 +986,8 @@ document.getElementById('searchObatModal').addEventListener('keyup', filterObatM
 loadObat();
 setInterval(loadPesanan, 10000);
 loadPesanan();
+loadAdminInsights();
+setInterval(loadAdminInsights, 10000);
 
 // ✅ LOAD STOK REALTIME SETIAP 2 DETIK
 setInterval(loadStokTable, 2000);

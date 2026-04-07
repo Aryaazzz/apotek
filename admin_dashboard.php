@@ -223,6 +223,9 @@ body{
     <button onclick="showSection('pesanan')" class="w-full px-4 py-3 rounded-lg text-white hover:text-yellow-300 font-medium transition flex items-center gap-3">
       <i class="fas fa-shopping-bag w-5 text-center" style="color: #ffe066;"></i> <span>Pesanan</span>
     </button>
+    <button onclick="showSection('riwayat')" class="w-full px-4 py-3 rounded-lg text-white hover:text-blue-300 font-medium transition flex items-center gap-3">
+      <i class="fas fa-history w-5 text-center" style="color: #3b82f6;"></i> <span>Riwayat Pesanan</span>
+    </button>
   </nav>
 
   <div class="p-5 border-t-2" style="border-color: #a8e06633;">
@@ -485,7 +488,40 @@ $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange
 </div>
 </section>
 
-<!-- MODAL PILIH OBAT -->
+<!-- RIWAYAT PESANAN -->
+<section id="riwayat" class="section bg-white p-8 rounded-2xl shadow-md mt-8" style="border-top: 4px solid #3b82f6;">
+<h3 class="text-2xl font-bold mb-6 flex items-center gap-2" style="color: #0f5132;">
+  <i class="fas fa-history" style="color: #3b82f6;"></i> Riwayat Pesanan
+</h3>
+
+<!-- SEARCH RIWAYAT -->
+<div class="grid md:grid-cols-3 gap-4 mb-6">
+  <div class="relative">
+    <input type="text" id="searchRiwayatPembeli" placeholder="Cari nama pembeli..." class="w-full border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #93c5fd; background: #f9f9f9;">
+  </div>
+  <div class="relative">
+    <input type="date" id="filterRiwayatTanggal" class="w-full border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #93c5fd; background: #f9f9f9;">
+  </div>
+  <div class="flex gap-2">
+    <button onclick="loadRiwayatPesanan()" class="text-white px-4 py-3 rounded-lg transition font-medium flex items-center gap-2" style="background: #3b82f6;">
+      <i class="fas fa-search"></i> Cari
+    </button>
+    <button onclick="resetRiwayatFilter()" class="text-gray-700 px-4 py-3 rounded-lg border-2 border-gray-300 hover:bg-gray-50 transition font-medium">
+      <i class="fas fa-undo"></i> Reset
+    </button>
+  </div>
+</div>
+
+<div class="overflow-x-auto">
+<div id="riwayatContainer" class="space-y-4">
+  <!-- Riwayat pesanan akan di-render di sini -->
+</div>
+</div>
+<div id="emptyMessageRiwayat" class="text-center p-8 text-gray-500 hidden">
+  <i class="fas fa-history text-4xl mb-3 block"></i>
+  <p class="text-lg font-medium">Tidak ada riwayat pesanan yang ditemukan</p>
+</div>
+</section>
 <div id="modalObat" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white rounded-2xl p-8 w-full max-w-2xl max-h-96 overflow-y-auto">
     <h3 class="text-2xl font-bold mb-6 flex items-center gap-2" style="color: #0f5132;">
@@ -902,15 +938,20 @@ function openModalObat(pesananId) {
   const daftar = document.getElementById("daftarObatModal");
   
   daftar.innerHTML = obatList.map(o => `
-    <label class="obat-modal-item flex items-center p-4 border-2 border-gray-200 rounded-xl hover:bg-green-50 cursor-pointer transition" data-nama="${o.nama.toLowerCase()}">
-      <input type="checkbox" class="obat-checkbox" value="${o.id}" style="width:20px;height:20px;cursor:pointer;">
+    <div class="obat-modal-item flex items-center p-4 border-2 border-gray-200 rounded-xl hover:bg-green-50 cursor-pointer transition" data-nama="${o.nama.toLowerCase()}">
+      <input type="checkbox" class="obat-checkbox" value="${o.id}" style="width:20px;height:20px;cursor:pointer;" onchange="toggleQuantityInput(this, ${o.id})">
       <div class="ml-4 flex-1">
         <div class="font-semibold text-gray-800">${o.nama}</div>
         <div class="text-sm text-gray-600">${o.kategori}</div>
         <div class="text-green-600 font-bold">Rp${Number(o.harga).toLocaleString('id-ID')}</div>
+        <div class="text-sm text-gray-500">Stok: ${o.stok || 0}</div>
+      </div>
+      <div class="quantity-input hidden flex items-center gap-2 mr-4">
+        <label class="text-sm font-medium text-gray-700">Qty:</label>
+        <input type="number" class="quantity-value w-16 px-2 py-1 border border-gray-300 rounded text-center" min="1" max="${o.stok || 1}" value="1" data-obat-id="${o.id}">
       </div>
       <img src="${o.gambar}" class="w-16 h-16 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/60'">
-    </label>
+    </div>
   `).join("");
   
   // Reset search
@@ -919,18 +960,14 @@ function openModalObat(pesananId) {
   modal.classList.remove('hidden');
 }
 
-function filterObatModal() {
-  const searchInput = document.getElementById('searchObatModal').value.toLowerCase();
-  const items = document.querySelectorAll('.obat-modal-item');
-  
-  items.forEach(item => {
-    const nama = item.getAttribute('data-nama');
-    if (nama.includes(searchInput)) {
-      item.style.display = '';
-    } else {
-      item.style.display = 'none';
-    }
-  });
+function toggleQuantityInput(checkbox, obatId) {
+  const item = checkbox.closest('.obat-modal-item');
+  const quantityDiv = item.querySelector('.quantity-input');
+  if (checkbox.checked) {
+    quantityDiv.classList.remove('hidden');
+  } else {
+    quantityDiv.classList.add('hidden');
+  }
 }
 
 function closeModalObat() {
@@ -939,16 +976,38 @@ function closeModalObat() {
 }
 
 async function submitObat() {
-  const checked = Array.from(document.querySelectorAll('.obat-checkbox:checked')).map(c => c.value);
+  const checkedBoxes = document.querySelectorAll('.obat-checkbox:checked');
   
-  if (checked.length === 0) {
+  if (checkedBoxes.length === 0) {
     showToast('Pilihan Obat Kosong', 'Silakan pilih minimal 1 obat sebelum menyelesaikan pesanan', 'warning');
+    return;
+  }
+  
+  const obatData = {};
+  let hasInvalidQuantity = false;
+  
+  checkedBoxes.forEach(checkbox => {
+    const obatId = checkbox.value;
+    const item = checkbox.closest('.obat-modal-item');
+    const quantityInput = item.querySelector('.quantity-value');
+    const quantity = parseInt(quantityInput.value);
+    
+    if (quantity <= 0) {
+      hasInvalidQuantity = true;
+      return;
+    }
+    
+    obatData[obatId] = quantity;
+  });
+  
+  if (hasInvalidQuantity) {
+    showToast('Quantity Tidak Valid', 'Pastikan semua quantity lebih dari 0', 'warning');
     return;
   }
   
   const fd = new FormData();
   fd.append("pesanan_id", currentPesananId);
-  checked.forEach(id => fd.append("obat_id[]", id));
+  fd.append("obat_data", JSON.stringify(obatData));
   
   const res = await fetch("admin_pesanan_update.php", {method: "POST", body: fd});
   const msg = await res.text();
@@ -983,16 +1042,124 @@ document.getElementById('filterStatusPesanan').addEventListener('change', filter
 // Event listener untuk search obat di modal
 document.getElementById('searchObatModal').addEventListener('keyup', filterObatModal);
 
+// Event listeners untuk filter riwayat
+document.getElementById('searchRiwayatPembeli').addEventListener('keyup', filterRiwayatPesanan);
+document.getElementById('filterRiwayatTanggal').addEventListener('change', filterRiwayatPesanan);
+
+let riwayatPesananList = [];
+
+async function loadRiwayatPesanan(){
+  const res = await fetch("api/get_riwayat_pesanan.php");
+  riwayatPesananList = await res.json();
+  renderRiwayatPesanan();
+}
+
+function filterRiwayatPesanan(){
+  const searchPembeli = document.getElementById('searchRiwayatPembeli').value.toLowerCase();
+  const filterTanggal = document.getElementById('filterRiwayatTanggal').value;
+
+  const filtered = riwayatPesananList.filter(p => {
+    const namaPembeli = (p.nama_pembeli || "").toLowerCase();
+    const matchPembeli = namaPembeli.includes(searchPembeli);
+    
+    let matchTanggal = true;
+    if (filterTanggal) {
+      const pesananDate = new Date(p.created_at).toISOString().split('T')[0];
+      matchTanggal = pesananDate === filterTanggal;
+    }
+    
+    return matchPembeli && matchTanggal;
+  });
+
+  renderRiwayatPesananFiltered(filtered);
+}
+
+function renderRiwayatPesananFiltered(data){
+  const container = document.getElementById("riwayatContainer");
+  const emptyMsg = document.getElementById("emptyMessageRiwayat");
+
+  if(data.length === 0){
+    container.innerHTML = "";
+    emptyMsg.classList.remove('hidden');
+    return;
+  }
+
+  emptyMsg.classList.add('hidden');
+  container.innerHTML = data.map(p => {
+    const totalHarga = p.obat.reduce((sum, obat) => sum + (obat.harga * obat.quantity), 0);
+    const tanggal = new Date(p.created_at).toLocaleDateString('id-ID', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    return `
+      <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <i class="fas fa-user text-blue-600"></i>
+              <span class="font-semibold text-gray-800">${p.nama_pembeli}</span>
+            </div>
+            <div class="text-sm text-gray-600">${tanggal}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-lg font-bold text-green-600">Rp${totalHarga.toLocaleString('id-ID')}</div>
+            <div class="text-sm text-gray-500">${p.obat.length} jenis obat</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="text-sm text-gray-700 mb-2">
+            <i class="fas fa-notes-medical mr-1"></i>
+            <strong>Keluhan:</strong> ${p.keluhan || 'Tidak ada detail'}
+          </div>
+        </div>
+        
+        <div class="border-t pt-3">
+          <div class="text-sm font-semibold text-gray-700 mb-2">Obat yang diberikan:</div>
+          <div class="space-y-2">
+            ${p.obat.map(obat => `
+              <div class="flex justify-between items-center bg-white p-3 rounded-lg">
+                <div>
+                  <div class="font-medium text-gray-800">${obat.nama}</div>
+                  <div class="text-sm text-gray-600">${obat.kategori}</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-sm text-gray-500">Qty: ${obat.quantity}</div>
+                  <div class="font-semibold text-green-600">Rp${(obat.harga * obat.quantity).toLocaleString('id-ID')}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderRiwayatPesanan(){
+  renderRiwayatPesananFiltered(riwayatPesananList);
+}
+
+function resetRiwayatFilter(){
+  document.getElementById('searchRiwayatPembeli').value = '';
+  document.getElementById('filterRiwayatTanggal').value = '';
+  filterRiwayatPesanan();
+}
+
 loadObat();
 setInterval(loadPesanan, 10000);
 loadPesanan();
 loadAdminInsights();
 setInterval(loadAdminInsights, 10000);
+loadRiwayatPesanan();
 
 // ✅ LOAD STOK REALTIME SETIAP 2 DETIK
 setInterval(loadStokTable, 2000);
 loadStokTable();
-</script>
 
 <!-- MODAL LIHAT GAMBAR OBAT -->
 <div id="modalGambar" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">

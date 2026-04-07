@@ -2,7 +2,7 @@
 require "config/database.php";
 
 $pesanan_id = $_POST['pesanan_id'] ?? null;
-$obat_ids   = $_POST['obat_id'] ?? [];
+$obat_data = $_POST['obat_data'] ?? []; // Array of ['id' => quantity]
 
 // Validasi Input
 if (!$pesanan_id) {
@@ -10,7 +10,7 @@ if (!$pesanan_id) {
   exit("Status Error: ID pesanan tidak ditemukan");
 }
 
-if (empty($obat_ids)) {
+if (empty($obat_data)) {
   http_response_code(400);
   exit("Status Error: Pilih minimal 1 obat");
 }
@@ -33,19 +33,22 @@ if ($p['status'] === 'selesai') {
 mysqli_query($conn, "DELETE FROM pesanan_obat WHERE pesanan_id='$pesanan_id'");
 
 // Insert Obat Baru & Kurangi Stok
-foreach ($obat_ids as $oid) {
+foreach ($obat_data as $oid => $quantity) {
   $oid = mysqli_real_escape_string($conn, $oid);
+  $quantity = (int) $quantity;
   
-  // Insert ke pesanan_obat
+  if ($quantity <= 0) continue;
+  
+  // Insert ke pesanan_obat dengan quantity
   mysqli_query($conn, "
-    INSERT INTO pesanan_obat (pesanan_id, obat_id)
-    VALUES ('$pesanan_id', '$oid')
+    INSERT INTO pesanan_obat (pesanan_id, obat_id, quantity)
+    VALUES ('$pesanan_id', '$oid', '$quantity')
   ");
   
-  // ✅ KURANGI STOK OBAT (1 unit per obat)
+  // ✅ KURANGI STOK OBAT sesuai quantity
   mysqli_query($conn, "
-    UPDATE obat SET stok = stok - 1
-    WHERE id='$oid' AND stok > 0
+    UPDATE obat SET stok = stok - $quantity
+    WHERE id='$oid' AND stok >= $quantity
   ");
 }
 

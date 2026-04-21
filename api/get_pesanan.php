@@ -1,10 +1,10 @@
 <?php
-require "../config/database.php";
+require "./config/database.php";
 
 $q = mysqli_query($conn, "
-  SELECT id, nama_pembeli, keluhan, status
+  SELECT id, nama_pembeli, keluhan, obat, obat_id, status
   FROM pesanan
-  WHERE status='proses'
+  WHERE status IN ('proses','menunggu')
   ORDER BY id DESC
 ");
 

@@ -724,6 +724,7 @@ async function loadDaftarObat() {
       const stokStatus = stok === 0 ? 'Habis' : stok < 5 ? 'Stok Terbatas' : 'Tersedia';
       const stokColor = stok === 0 ? '#ef4444' : stok < 5 ? '#f59e0b' : '#10b981';
       const bgColor = stok === 0 ? '#fee2e2' : stok < 5 ? '#fef3c7' : '#dcfce7';
+      const safeNama = String(o.nama || '').replace(/'/g, "\\'");
       
       return `
         <div class="group rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border hover:border-opacity-70 ${stok === 0 ? 'opacity-60' : ''}" style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(168,224,99,0.08) 100%); border-color: #a8e06633;">
@@ -754,6 +755,9 @@ async function loadDaftarObat() {
               <div class="flex items-center justify-center w-10 h-10 rounded-full ${stok > 0 ? 'text-green-600' : 'text-red-600'} font-bold" style="background: ${stok > 0 ? '#dcfce722' : '#fee2e244'};">
                 ${stok > 0 ? '✓' : '✕'}
               </div>
+            </div>
+            <div class="pt-3">
+              ${stok > 0 ? `<button type="button" onclick="buyObat(${o.id}, '${safeNama}')" class="w-full bg-gradient-to-r from-[#0f5132] to-[#a8e063] text-white py-3 rounded-xl font-semibold transition hover:opacity-90">Beli Sekarang</button>` : `<button type="button" disabled class="w-full bg-gray-300 text-gray-700 py-3 rounded-xl font-semibold">Habis</button>`}
             </div>
           </div>
         </div>
@@ -788,18 +792,45 @@ document.getElementById("kirimKeluhan").addEventListener("click", () => {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: `nama_pembeli=${encodeURIComponent(nama)}&keluhan=${encodeURIComponent(keluhan)}`
   })
-  .then(res => res.text())
-  .then(res => {
-    if (res.trim() === "ok") {
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
       showToast('Keluhan Berhasil Dikirim!', 'Silahkan lihat Status Pesanan untuk informasi lebih lanjut', 'success', 4000);
       document.getElementById("nama_pembeli").value = "";
       document.getElementById("keluhan").value = "";
       loadStatusPesanan(); // refresh langsung
     } else {
-      showToast('Gagal Mengirim Keluhan', res, 'error', 5000);
+      console.error('kirim_keluhan error:', data);
+      showToast('Gagal Mengirim Keluhan', data.message || 'Terjadi kesalahan', 'error', 5000);
     }
+  })
+  .catch(err => {
+    console.error('fetch kirim_keluhan failed:', err);
+    showToast('Gagal Mengirim Keluhan', 'Kesalahan jaringan atau server', 'error', 5000);
   });
 });
+
+async function buyObat(obatId, obatNama) {
+  try {
+    const res = await fetch("api/kirim_pesanan.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `obat_id=${encodeURIComponent(obatId)}&quantity=1`
+    });
+    const text = await res.text();
+
+    if (text.trim() === "ok") {
+      showToast('Pesanan Berhasil Dikirim', `Pesanan ${obatNama} berhasil dikirim ke admin.`, 'success', 4000);
+      loadStatusPesanan();
+      loadDaftarObat();
+    } else {
+      showToast('Gagal Mengirim Pesanan', text, 'error', 5000);
+    }
+  } catch (error) {
+    console.error(error);
+    showToast('Gagal Mengirim Pesanan', 'Terjadi kesalahan jaringan.', 'error', 5000);
+  }
+}
 
 async function loadStatusPesanan(){
   const res = await fetch("api/cek_status.php")
@@ -809,6 +840,11 @@ async function loadStatusPesanan(){
 
   if(data.status === "kosong"){
     box.innerHTML = "❌ Belum ada pesanan";
+    return;
+  }
+
+  if(data.status === "menunggu"){
+    box.innerHTML = "⏳ Keluhan Anda sedang menunggu diproses admin. Keluhan: " + data.keluhan;
     return;
   }
 

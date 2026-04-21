@@ -24,6 +24,11 @@ if (!$p) {
   exit;
 }
 
+if ($p['status'] === 'menunggu') {
+  echo json_encode(["status"=>"menunggu", "keluhan" => $p['keluhan']]);
+  exit;
+}
+
 if ($p['status'] === 'proses') {
   echo json_encode(["status"=>"proses"]);
   exit;

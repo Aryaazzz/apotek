@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "config/database.php";
+require "./config/database.php";
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: login.php");
@@ -29,6 +29,12 @@ body{
   background: linear-gradient(135deg, #f8fafb 0%, #e8f5e9 50%, #f0f9ff 100%);
   background-size: 200% 200%;
   animation: bg 15s ease infinite;
+}
+
+.obat-row,
+.pesanan-row,
+.obat-modal-item {
+  cursor: pointer;
 }
 @keyframes bg{
   0%{background-position: 0% 50%}
@@ -344,6 +350,7 @@ body{
   <input name="nama" placeholder="Nama Obat" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
   <input name="kategori" placeholder="Kategori" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
   <input name="harga" type="number" placeholder="Harga" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
+  <input name="stok" type="number" placeholder="Stok" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
   <input name="gambar" placeholder="URL Gambar" class="border-2 p-3 rounded-lg focus:outline-none transition" style="border-color: #a8e06644; background: #f9f9f9;" required>
   <textarea name="deskripsi" placeholder="Deskripsi" class="border-2 p-3 rounded-lg focus:outline-none transition md:col-span-2 resize-none" style="border-color: #a8e06644; background: #f9f9f9;" rows="4"></textarea>
   <button class="text-white py-3 rounded-lg md:col-span-2 font-semibold transition flex items-center justify-center gap-2" style="background: linear-gradient(90deg, #0f5132 0%, #a8e063 100%);">
@@ -375,7 +382,7 @@ body{
     </select>
   </div>
   <div class="text-right">
-    <button onclick="resetFilter()" class="text-white px-6 py-3 rounded-lg transition font-medium flex items-center justify-center gap-2 w-full" style="background: #666;">
+    <button type="button" onclick="resetFilter()" class="text-white px-6 py-3 rounded-lg transition font-medium flex items-center justify-center gap-2 w-full" style="background: #666;">
       <i class="fas fa-sync-alt"></i> Reset Filter
     </button>
   </div>
@@ -400,11 +407,11 @@ while($o=mysqli_fetch_assoc($q)):
 $stok = isset($o['stok']) ? $o['stok'] : 0;
 $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange-600 font-bold' : 'text-green-600 font-bold');
 ?>
-<tr class="border-b hover:bg-gray-50 transition obat-row" data-obat-id="<?= $o['id'] ?>">
+<tr class="border-b hover:bg-gray-50 transition obat-row" data-obat-id="<?= $o['id'] ?>" onclick="handleObatRowClick(event, <?= $o['id'] ?>)">
 <td class="p-4 text-center">
   <div class="w-16 h-16 mx-auto bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center border-2 border-gray-200 hover:border-opacity-70 transition" style="border-color: #a8e06633;">
     <?php if (!empty($o['gambar'])): ?>
-      <img src="<?= htmlspecialchars($o['gambar']) ?>" alt="<?= htmlspecialchars($o['nama']) ?>" class="w-full h-full object-cover cursor-pointer" onclick="showImageModal('<?= htmlspecialchars($o['gambar']) ?>', '<?= htmlspecialchars($o['nama']) ?>')">
+      <img src="<?= htmlspecialchars($o['gambar']) ?>" alt="<?= htmlspecialchars($o['nama']) ?>" class="w-full h-full object-cover cursor-pointer" onclick="event.stopPropagation(); showImageModal('<?= htmlspecialchars($o['gambar']) ?>', '<?= htmlspecialchars($o['nama']) ?>')">
     <?php else: ?>
       <div class="text-gray-400 text-center">
         <i class="fas fa-image text-3xl"></i>
@@ -419,7 +426,7 @@ $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange
 <td class="p-4 text-center stok-display" style="color: <?= $stok == 0 ? '#ef4444' : ($stok < 10 ? '#f59e0b' : '#10b981'); ?>; font-weight: bold;"><?= $stok ?></td>
 <td class="p-4 text-center">
   <div class="flex gap-2 justify-center flex-wrap">
-    <button onclick="openRestokModal(<?= $o['id'] ?>, '<?= htmlspecialchars($o['nama']) ?>')" class="text-white px-3 py-2 rounded-lg transition font-medium text-sm flex items-center gap-1" style="background: linear-gradient(90deg, #a8e063 0%, #7cb342 100%);" title="Restok Obat">
+    <button type="button" onclick="openRestokModal(<?= $o['id'] ?>, '<?= htmlspecialchars($o['nama']) ?>')" class="text-white px-3 py-2 rounded-lg transition font-medium text-sm flex items-center gap-1" style="background: linear-gradient(90deg, #a8e063 0%, #7cb342 100%);" title="Restok Obat">
       <i class="fas fa-plus-circle"></i> Restok
     </button>
     <a href="edit_obat.php?id=<?= $o['id'] ?>" class="text-white px-3 py-2 rounded-lg transition font-medium text-sm flex items-center gap-1" style="background: linear-gradient(90deg, #0f5132 0%, #1b6a3f 100%);">
@@ -458,6 +465,7 @@ $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange
   <div>
     <select id="filterStatusPesanan" class="w-full border-2 p-3 rounded-lg focus:outline-none transition bg-white" style="border-color: #a8e06644;">
       <option value="">Semua Status</option>
+      <option value="menunggu"><i class="fas fa-clock"></i> Menunggu</option>
       <option value="proses"><i class="fas fa-hourglass-half"></i> Diproses</option>
       <option value="selesai"><i class="fas fa-check-circle"></i> Riwayat Selesai</option>
     </select>
@@ -573,10 +581,10 @@ $stok_color = $stok == 0 ? 'text-red-600 font-bold' : ($stok < 10 ? 'text-orange
     </div>
 
     <div class="flex gap-3 justify-end">
-      <button onclick="closeRestokModal()" class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-3 rounded-lg transition font-medium">
+      <button type="button" onclick="closeRestokModal()" class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-3 rounded-lg transition font-medium">
         <i class="fas fa-times mr-2"></i> Batal
       </button>
-      <button onclick="submitRestok()" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg transition font-medium flex items-center gap-2">
+      <button type="button" onclick="submitRestok()" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg transition font-medium flex items-center gap-2">
         <i class="fas fa-save"></i> Simpan Restok
       </button>
     </div>
@@ -664,6 +672,26 @@ function closeRestokModal() {
   document.getElementById('modalRestok').classList.add('hidden');
   currentRestokObatId = null;
   currentRestokObatNama = null;
+}
+
+function handleObatRowClick(event, obatId) {
+  if (event.target.closest('button, a, input, select, textarea')) return;
+  window.location.href = `edit_obat.php?id=${obatId}`;
+}
+
+function handlePesananRowClick(event, pesananId, status) {
+  if (event.target.closest('button, a, input, select, textarea')) return;
+  if (status !== 'selesai') {
+    openModalObat(pesananId);
+  }
+}
+
+function toggleModalObatItem(event, obatId) {
+  if (event.target.closest('input')) return;
+  const checkbox = document.querySelector(`.obat-checkbox[value="${obatId}"]`);
+  if (!checkbox) return;
+  checkbox.checked = !checkbox.checked;
+  toggleQuantityInput(checkbox, obatId);
 }
 
 async function submitRestok() {
@@ -802,9 +830,18 @@ async function loadStokTable() {
 }
 
 async function loadPesanan(){
-  const res = await fetch("api/get_pesanan.php");
-  pesananList = await res.json();
-  renderPesanan();
+  try {
+    const res = await fetch("api/admin_pesanan_list.php");
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+    pesananList = await res.json();
+    console.log('admin pesananList', pesananList);
+    renderPesanan();
+  } catch (error) {
+    console.error('loadPesanan error:', error);
+    showToast('Gagal memuat pesanan admin', error.message, 'error', 5000);
+  }
 }
 
 async function loadAdminInsights(){
@@ -887,18 +924,20 @@ function renderPesananFiltered(data){
 
   emptyMsg.classList.add('hidden');
   tbody.innerHTML = data.map(p => `
-    <tr class="border-b hover:bg-gray-50 transition pesanan-row" data-status="${p.status}">
+    <tr class="border-b hover:bg-gray-50 transition pesanan-row" data-status="${p.status}" onclick="handlePesananRowClick(event, ${p.id}, '${p.status}')">
       <td class="p-4"><i class="fas fa-user-circle text-gray-500 mr-2"></i>${p.nama_pembeli}</td>
       <td class="p-4 text-gray-700">${p.keluhan}</td>
       <td class="p-4 text-center">
         ${p.status=='selesai'
           ? '<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold"><i class="fas fa-check-circle mr-1"></i>Selesai</span>'
+          : p.status=='menunggu'
+          ? '<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold"><i class="fas fa-clock mr-1"></i>Menunggu</span>'
           : '<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-semibold"><i class="fas fa-hourglass-half mr-1"></i>Diproses</span>'}
       </td>
       <td class="p-4 text-center">
         ${p.status === 'selesai' 
           ? '<span class="text-gray-500 text-sm">Selesai</span>'
-          : '<button onclick="openModalObat(' + p.id + ')" class="bg-green-100 text-green-700 px-4 py-2 rounded-lg hover:bg-green-200 transition font-medium text-sm"><i class="fas fa-check"></i> Selesaikan</button>'}
+          : '<button type="button" onclick="openModalObat(' + p.id + ')" class="bg-green-100 text-green-700 px-4 py-2 rounded-lg hover:bg-green-200 transition font-medium text-sm"><i class="fas fa-check"></i> Selesaikan</button>'}
       </td>
     </tr>
   `).join("");
@@ -938,8 +977,8 @@ function openModalObat(pesananId) {
   const daftar = document.getElementById("daftarObatModal");
   
   daftar.innerHTML = obatList.map(o => `
-    <div class="obat-modal-item flex items-center p-4 border-2 border-gray-200 rounded-xl hover:bg-green-50 cursor-pointer transition" data-nama="${o.nama.toLowerCase()}">
-      <input type="checkbox" class="obat-checkbox" value="${o.id}" style="width:20px;height:20px;cursor:pointer;" onchange="toggleQuantityInput(this, ${o.id})">
+    <div class="obat-modal-item flex items-center p-4 border-2 border-gray-200 rounded-xl hover:bg-green-50 transition" data-nama="${o.nama.toLowerCase()}" onclick="toggleModalObatItem(event, ${o.id})">
+      <input type="checkbox" class="obat-checkbox" value="${o.id}" style="width:20px;height:20px;cursor:pointer;" onchange="toggleQuantityInput(this, ${o.id})" onclick="event.stopPropagation();">
       <div class="ml-4 flex-1">
         <div class="font-semibold text-gray-800">${o.nama}</div>
         <div class="text-sm text-gray-600">${o.kategori}</div>
@@ -1160,6 +1199,7 @@ loadRiwayatPesanan();
 // ✅ LOAD STOK REALTIME SETIAP 2 DETIK
 setInterval(loadStokTable, 2000);
 loadStokTable();
+</script>
 
 <!-- MODAL LIHAT GAMBAR OBAT -->
 <div id="modalGambar" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">

@@ -188,6 +188,12 @@ button{
     </div>
 
     <div class="group">
+      <label>Stok</label>
+      <input type="number" name="stok"
+        value="<?= $o['stok'] ?>" required>
+    </div>
+
+    <div class="group">
       <label>URL Gambar</label>
       <input type="text" name="gambar"
         value="<?= htmlspecialchars($o['gambar']) ?>" required>

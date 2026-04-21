@@ -1,12 +1,13 @@
 <?php
 require "../config/database.php";
+header('Content-Type: application/json');
 
 $data = [];
 
 $q = mysqli_query($conn, "
   SELECT pesanan.*, users.username
   FROM pesanan
-  JOIN users ON pesanan.user_id = users.id
+  LEFT JOIN users ON pesanan.user_id = users.id
   ORDER BY pesanan.id DESC
 ");
 
